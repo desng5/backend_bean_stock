@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Create A Coffee {% endblock %}
+
+{% block header %}
+    <h3>Create a Coffee</h3>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post">
+            {{ form.csrf_token }}
+
+            {{ form.name.label }}
+            {{ form.name(class='', placeholder='Enter Name') }}
+
+            {{ form.price.label }}
+            {{ form.price(class='', placeholder='Enter Price') }}
+
+            {{ form.description.label }}
+            {{ form.description(class='' placeholder='Enter Description') }}
+
+            {{ form.rating.label }}
+            {{ form.rating(class='', placeholder='Enter Rating') }}
+
+            {{ form.brew_method.label }}
+            {{ form.brew_method(class='', placeholder='Enter Brew Method') }}
+
+            {{ form.roaster.label }}
+            {{ form.roaster(class='', placeholder='Enter Roaster') }}
+
+            {{ form.submit(class='') }}
+        </form>
+    </div>
+{% endblock %}

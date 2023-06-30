@@ -1,13 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Bean Stock</title>
-  </head>
-  <body class="bg-sky-800">
-    
-  </body>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block header %}
+    <h1>Bean Stock</h1>
+    {% if current_user.is_authenticated %}
+        <h3>Welcome {{ current_user.username }}!</h3>
+    {% else %}
+        <h3>You're not logged in. Please Register or Log in.</h3>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div>
+
+    </div>
+{% endblock %}

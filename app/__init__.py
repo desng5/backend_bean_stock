@@ -6,7 +6,6 @@ from flask_login import LoginManager
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
 
@@ -19,6 +18,7 @@ login = LoginManager(app)
 login.login_view = 'login'
 login.login_message_category = 'warning'
 
-
+from .api import api
+app.register_blueprint(api)
 
 from app import routes, models

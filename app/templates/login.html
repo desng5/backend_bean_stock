@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} Log In {% endblock %}
+
+{% block header %}
+    <h3>Log In</h3>
+{% endblock %}
+
+{% block content %}
+    <div>
+        <form method="post">
+            {{ form.csrf_token }}
+
+            {{ form.email.label }}
+            {{ form.email(class='', placeholder='Enter Email') }}
+
+            {{ form.password.label }}
+            {{ form.password(class='', placeholder='Enter Password') }}
+
+            {{ form.submit(class='') }}
+        </form>
+    </div>
+{% endblock %}
