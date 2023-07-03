@@ -16,6 +16,7 @@ class LoginForm(FlaskForm):
 
 class CoffeeForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired()])
+    coffee_type = StringField('Type', validators=[InputRequired()])
     price = StringField('Price', validators=[InputRequired()])
     description = TextAreaField('Description')
     rating = FloatField('Rating')

@@ -13,6 +13,17 @@
 
 {% block content %}
     <div>
-
+        {% for coffee in coffees %}
+            <div>
+                <h4>{{ coffee.name }} - ${{ coffee.price }}</h4>
+                <p>{{ coffee.description }}</p>
+                <p>Rating: {{ coffee.rating }}</p>
+                <p>Brew Method: {{ coffee.brew_method }}</p>
+                <p>Roaster: {{ coffee.roaster }}</p>
+                <p>Created On: {{ coffee.date_created }}</p>
+                <p>By: {{ coffee.brewer.username }}</p>
+                <img src="{{ coffee.image_url }}" alt="{{ coffee.name }}">
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}

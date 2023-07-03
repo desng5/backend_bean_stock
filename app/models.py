@@ -45,11 +45,13 @@ def get_user(user_id):
 class Coffee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    price = db.Column(db.Numeric(6,2), nullable=False)
+    coffee_type = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Numeric(precision=6, scale=2), nullable=False)
     description = db.Column(db.String)
-    rating = db.Column(db.Numeric(2,1))
+    rating = db.Column(db.Numeric(precision=2, scale=1))
     brew_method = db.Column(db.String(150))
     roaster = db.Column(db.String(50))
+    image_url = db.Column(db.String)
     date_created = db.Column(db.DateTime, default=datetime.utcnow(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 

@@ -1,8 +1,8 @@
-"""empty message
+"""re creating migrations folder, updated images api
 
-Revision ID: e6ff97a5373b
+Revision ID: a598ffc91a45
 Revises: 
-Create Date: 2023-07-02 15:46:47.022715
+Create Date: 2023-07-02 18:52:00.501040
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e6ff97a5373b'
+revision = 'a598ffc91a45'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,11 +36,13 @@ def upgrade():
     op.create_table('coffee',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=False),
+    sa.Column('coffee_type', sa.String(length=50), nullable=False),
     sa.Column('price', sa.Numeric(precision=6, scale=2), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('rating', sa.Numeric(precision=2, scale=1), nullable=True),
     sa.Column('brew_method', sa.String(length=150), nullable=True),
     sa.Column('roaster', sa.String(length=50), nullable=True),
+    sa.Column('image_url', sa.String(), nullable=True),
     sa.Column('date_created', sa.DateTime(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
