@@ -3,10 +3,12 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .forms import RegisterForm, LoginForm, CoffeeForm
 from .models import User, Coffee
+import requests, os
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    coffees = db.session.execute(db.select(Coffee)).scalars()
+    return render_template('index.html', coffees=coffees)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -59,13 +61,15 @@ def create_coffee():
     form = CoffeeForm()
     if form.validate_on_submit():
         name = form.name.data
+        coffee_type = form.coffee_type.data
         price = form.price.data
         description = form.description.data
         rating = form.rating.data
         brew_method = form.brew_method.data
         roaster = form.roaster.data
+        image_url = get_images(name, coffee_type, roaster, brew_method, description)
 
-        new_coffee = Coffee(name=name, price=price, description=description, rating=rating, brew_method=brew_method, roaster=roaster, user_id=current_user.id)
+        new_coffee = Coffee(name=name, coffee_type=coffee_type, price=price, description=description, rating=rating, brew_method=brew_method, roaster=roaster, user_id=current_user.id, image_url=image_url)
         db.session.add(new_coffee)
         db.session.commit()
         flash(f'You have brewed the {new_coffee.name} coffee!', 'success')
@@ -121,3 +125,15 @@ def delete_coffee(coffee_id):
     db.session.commit()
     flash(f'Your {coffee.name} coffee has been deleted', 'success')
     return redirect(url_for('index'))
+
+def get_images(name, coffee_type, roaster, brew_method, description):
+    url = "https://bing-image-search1.p.rapidapi.com/images/search"
+    querystring = {"q": f"{name} {coffee_type} {roaster} {brew_method} {description}"}
+    headers = {
+        "X-RapidAPI-Key": f"{os.getenv('API_KEY')}",
+        "X-RapidAPI-Host": "bing-image-search1.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers, params=querystring)
+    data = response.json()
+    print(data)
+    return data['value'][0]['contentUrl']
