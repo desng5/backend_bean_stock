@@ -91,17 +91,20 @@ def edit_coffee(coffee_id):
     form = CoffeeForm()
     if form.validate_on_submit():
         coffee.name = form.name.data
+        coffee.coffee_type = form.coffee_type.data
         coffee.price = form.price.data
         coffee.description = form.description.data
         coffee.rating = form.rating.data
         coffee.brew_method = form.brew_method.data
         coffee.roaster = form.roaster.data
+        coffee.image_url = get_images(coffee.name, coffee.coffee_type, coffee.roaster, coffee.brew_method, coffee.description)
 
         db.session.commit()
         flash(f'{coffee.name} has been edited.', 'success')
         return redirect(url_for('index'))
 
     form.name.data = coffee.name
+    form.coffee_type.data = coffee.coffee_type
     form.price.data = coffee.price
     form.description.data = coffee.description
     form.rating.data = coffee.rating
@@ -135,5 +138,4 @@ def get_images(name, coffee_type, roaster, brew_method, description):
     }
     response = requests.get(url, headers=headers, params=querystring)
     data = response.json()
-    print(data)
     return data['value'][0]['contentUrl']

@@ -13,12 +13,15 @@
 
             {{ form.name.label }}
             {{ form.name(class='', placeholder='Enter Name') }}
+            
+            {{ form.coffee_type.label }}
+            {{ form.coffee_type(class='', placeholder='Enter Type of Coffee') }}            
 
             {{ form.price.label }}
             {{ form.price(class='', placeholder='Enter Price') }}
 
             {{ form.description.label }}
-            {{ form.description(class='' placeholder='Enter Description') }}
+            {{ form.description(class='', placeholder='Enter Description') }}
 
             {{ form.rating.label }}
             {{ form.rating(class='', placeholder='Enter Rating') }}
@@ -29,7 +32,7 @@
             {{ form.roaster.label }}
             {{ form.roaster(class='', placeholder='Enter Roaster') }}
 
-            {{ form.submit(class='') }}
+            {{ form.submit(class='', value='Edit Coffee') }}
         </form>
     </div>
 {% endblock %}

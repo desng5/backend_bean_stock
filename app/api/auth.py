@@ -6,7 +6,7 @@ from app.models import User
 basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth()
 
-@basic_auth.verify_password()
+@basic_auth.verify_password
 def verify(email, password):
     user = db.session.execute(db.Select(User).where(User.email==email)).scalars().one_or_none()
     if user is not None and user.check_password(password):
