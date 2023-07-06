@@ -15,12 +15,12 @@ def get_token():
         'token_expiration': user.token_expiration
     }
 
-    @api.route('/coffee', methods=['GET'])
+    @api.route('/coffees', methods=['GET'])
     def get_coffees():
         coffees = db.session.execute(db.select(Coffee)).scalars().all()
         return [coffee.to_dict() for coffee in coffees]
 
-    @api.route('/user', methods=['POST'])
+    @api.route('/users', methods=['POST'])
     def create_user():
         if not request.is_json:
             return { 'error': 'Your request content-tpe must be application/json' }
