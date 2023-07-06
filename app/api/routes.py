@@ -15,50 +15,49 @@ def get_token():
         'token_expiration': user.token_expiration
     }
 
-    @api.route('/coffees', methods=['GET'])
-    def get_coffees():
-        coffees = db.session.execute(db.select(Coffee)).scalars().all()
-        return [coffee.to_dict() for coffee in coffees]
+@api.route('/coffees', methods=['GET'])
+def get_coffees():
+    coffees = db.session.execute(db.select(Coffee)).scalars().all()
+    return [coffee.to_dict() for coffee in coffees]
 
-    @api.route('/users', methods=['POST'])
-    def create_user():
-        if not request.is_json:
-            return { 'error': 'Your request content-tpe must be application/json' }
-        data = request.json
-        required_fields = ['username', 'email', 'password']
-        missing_fields = []
-        for field in required_fields:
-            if field not in data:
-                missing_fields.append(field)
-        if missing_fields:
-            return { 'error': f"{', '.join(missing_fields)} fileds are required" }, 400
+@api.route('/users', methods=['POST'])
+def create_user():
+    if not request.is_json:
+        return { 'error': 'Your request content-type must be application/json' }
 
+    data = request.json
+    required_fields = ['username', 'email', 'password']
+    missing_fields = []
+    for field in required_fields:
+        if field not in data:
+            missing_fields.append(field)
+    if missing_fields:
+        return { 'error': f"{', '.join(missing_fields)} fields are required" }, 400
 
-        username = data.get('username')
-        email = data.get('email')
-        password = data.get('password')
+    username = data.get('username')
+    email = data.get('email')
+    password = data.get('password')
+    check_user = db.session.execute(db.select(User).where((User.username == username) | (User.email == email))).scalars().all()
+    if check_user:
+        return { 'error': 'User with that username and/or email already exists' }
 
-        check_user = db.session.execute(db.select(User).where((User.username == username) / (User.email == email))).scalars().all()
-        if check_user:
-            return { 'error': 'User with that username and/or email already exists' }
+    new_user = User(username=username, email=email, password=password)
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user.to_dict()
 
-        new_user = User(username=username, email=email, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        return new_user.to_dict()
+@api.route('/me')
+@token_auth.login_required
+def get_me():
+    user = token_auth.current_user()
+    return user.to_dict()
 
-    @api.route('/me')
-    @token_auth.login_required
-    def get_me():
-        user = token_auth.current_user()
-        return user.to_dict()
+@api.route('/coffees', methods=['POST'])
+@token_auth.login_required
+def create_coffee():
+    if not request.is_json:
+        return { 'error', 'Your request content-type must be application/json' }
 
-    @api.route('/coffees', methods=['POST'])
-    @token_auth.login_required
-    def create_coffee():
-        if not request.is_json:
-            return{ 'error', 'Your request content-type must be application/json'}
-        
     data = request.json
     required_fields = ['name', 'coffee_type', 'price', 'description', 'rating', 'brew_method', 'roaster']
     missing_fields = []
@@ -66,8 +65,7 @@ def get_token():
         if field not in data:
             missing_fields.append(field)
     if missing_fields:
-        return { 'error': f"{', '.join(missing_fields)} fileds are required" }, 400
-
+        return { 'error': f"{', '.join(missing_fields)} fields are required" }, 400
 
     name = data.get('name')
     coffee_type = data.get('coffee_type')
@@ -89,8 +87,7 @@ def get_token():
 def edit_coffee(coffee_id):
     if not request.is_json:
         return { 'error': 'Your request content-type must be application/json' }
-
-    coffee = deb.session.get(Coffee, coffee_id)
+    coffee = db.session.get(Coffee, coffee_id)
     if coffee is None:
         return { 'error': f'Coffee with ID {coffee_id} does not exist' }, 404
     user = token_auth.current_user()
@@ -99,13 +96,12 @@ def edit_coffee(coffee_id):
 
     data = request.json
     for field in data:
-        if field in {'name', 'coffee_type', 'price', 'description', 'rating', 'brew_method', 'roaster'}:
+        if field in { 'name', 'coffee_type', 'price', 'description', 'rating', 'brew_method', 'roaster' }:
             setattr(coffee, field, data[field])
     db.session.commit()
     return coffee.to_dict()
-    
 
-@api.route('/coffees/<coffe_id>', methods=['DELETE'])
+@api.route('/coffees/<coffee_id>', methods=['DELETE'])
 @token_auth.login_required
 def delete_coffee(coffee_id):
     coffee = db.session.get(Coffee, coffee_id)
