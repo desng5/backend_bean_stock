@@ -76,10 +76,6 @@ class Coffee(db.Model):
             'brew_method': self.brew_method,
             'roaster': self.roaster,
             'image_url': self.image_url,
-            'date_created': self.date_created
-<<<<<<< HEAD
+            'date_created': self.date_created,
             'user_id': self.user_id
-            
-=======
->>>>>>> 326d5121c6b97dfb3ddaf7fcac4cf9b892df921f
         }
