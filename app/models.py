@@ -37,11 +37,12 @@ class User(db.Model, UserMixin):
         now = datetime.utcnow()
         self.token_expiration = now - timedelta(seconds=1)
         db.session.commit()
+
     def to_dict(self):
         return {
-            'id':self.id,
-            'username': self.uername,
-            'email': self.email,
+            'id': self.id,
+            'username': self.username,
+            'email': self.email
         }
 
 @login.user_loader
@@ -76,6 +77,9 @@ class Coffee(db.Model):
             'roaster': self.roaster,
             'image_url': self.image_url,
             'date_created': self.date_created
+<<<<<<< HEAD
             'user_id': self.user_id
             
+=======
+>>>>>>> 326d5121c6b97dfb3ddaf7fcac4cf9b892df921f
         }
