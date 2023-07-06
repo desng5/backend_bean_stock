@@ -3,6 +3,7 @@ from . import api
 from app import db
 from ..models import User, Coffee
 from .auth import basic_auth, token_auth
+from ..routes import get_images
 
 @api.route('/token')
 @basic_auth.login_required
@@ -75,8 +76,10 @@ def get_token():
     rating = data.get('rating')
     brew_method = data.get('brew_method')
     roaster = data.get('roaster')
+    image_url = get_images(name, coffee_type, roaster, brew_method, description)
+    user = token_auth.current_user()
 
-    new_coffee = Coffee(name=name, coffee_type=coffee_type, price=price, description=description, rating=rating, brew_method=brew_method, roaster=roaster)
+    new_coffee = Coffee(name=name, coffee_type=coffee_type, price=price, description=description, rating=rating, brew_method=brew_method, roaster=roaster, user_id=user.id, image_url=image_url)
     db.session.add(new_coffee)
     db.session.commit()
     return new_coffee.to_dict()
