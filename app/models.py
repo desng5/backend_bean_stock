@@ -76,5 +76,6 @@ class Coffee(db.Model):
             'roaster': self.roaster,
             'image_url': self.image_url,
             'date_created': self.date_created
+            'user_id': self.user_id
             
         }
