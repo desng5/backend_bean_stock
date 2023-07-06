@@ -12,7 +12,7 @@ def get_token():
     token = user.get_token()
     return {
         'token': token,
-        'token_expiration': user.token_expiration
+        'tokenExp': user.token_expiration
     }
 
 @api.route('/coffees', methods=['GET'])
