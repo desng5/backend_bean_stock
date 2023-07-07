@@ -1,8 +1,8 @@
-"""re creating migrations folder, updated images api
+"""Trying to fix db entry
 
-Revision ID: a598ffc91a45
+Revision ID: 9b721deda142
 Revises: 
-Create Date: 2023-07-02 18:52:00.501040
+Create Date: 2023-07-07 00:16:24.815053
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a598ffc91a45'
+revision = '9b721deda142'
 down_revision = None
 branch_labels = None
 depends_on = None
